@@ -69,8 +69,10 @@ layouts =
 settings = {
     { names  = { "⎛✉⎞", "⎛2 ", "⎛3 ", "⎛4 ", "⎛5 ", "⎛6 ", "⎛7 ", "⎛8 ", "⎛9 " },
       layout = { layouts[2], layouts[4], layouts[4], layouts[4], layouts[4], layouts[3], layouts[1], layouts[4], layouts[4] }
-    }
-}}
+    },
+    {  names = { "1-Mail", "2-Web", "3", "4", "5-IRC", "6-XMPP", "7-Media", "8-Sys", "9-SSH" },
+      layout = { layouts[4], layouts[4], layouts[4], layouts[4], layouts[4], layouts[4], layouts[4], layouts[4], layouts[4] }
+}}}
                                            
 for s = 1, screen.count() do
     tags[s] = awful.tag(tags.settings[s].names, s, tags.settings[s].layout)
@@ -445,7 +447,7 @@ globalkeys = awful.util.table.join(
     awful.key({ },                   "#148", function () awful.util.spawn("galculator") end),
     awful.key({ },                   "#225", function () awful.util.spawn("luakit") end),
     awful.key({ },                   "#165", function () awful.util.spawn("pcmanfm") end),
-    awful.key({ },                   "Print", function () awful.util.spawn("xfce4-terminal") end),
+    awful.key({ "Control"         }, "Print", function () awful.util.spawn("xfce4-terminal") end),
     awful.key({ modkey,           }, "Print", function () awful.util.spawn("xfce4-screenshooter") end),
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey,           }, "p",  function () awful.util.spawn("dmenu_run -b") end),
@@ -573,6 +575,7 @@ awful.rules.rules = {
     { rule = { instance = "pidgin" }, properties = {tag = tags[1][6]}},
     { rule = { instance = "gvim" }, properties = {tag = tags[1][2]}},
     { rule = { instance = "nitrogen" }, properties = {floating = true}},
+    { rule = { instance = "dwb" }, properties = {floating = true}},
     { rule = { name = "pidgin" }, properties = {tag = tags[1][6]}}
 }
 -- }}}
