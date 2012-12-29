@@ -23,6 +23,7 @@ function run_once(cmd)
   awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
 end
 
+run_once("cairo-compmgr")
 run_once("nm-applet")
 run_once("nitrogen --restore")
 run_once("blueman-applet")
@@ -67,7 +68,7 @@ layouts =
 --tags = { }
  tags = {
 settings = {
-    { names  = { "⎛✉⎞", "⎛2 ", "⎛3 ", "⎛4 ", "⎛5 ", "⎛6 ", "⎛7 ", "⎛8 ", "⎛9 " },
+    { names  = { "⎛✉⎞", "⎛2", "⎛3", "⎛4", "⎛5", "⎛6", "⎛7", "⎛8", "⎛9" },
       layout = { layouts[2], layouts[4], layouts[4], layouts[4], layouts[4], layouts[3], layouts[1], layouts[4], layouts[4] }
     },
     {  names = { "1-Mail", "2-Web", "3", "4", "5-IRC", "6-XMPP", "7-Media", "8-Sys", "9-SSH" },
@@ -341,7 +342,7 @@ for s = 1, screen.count() do
                                           end, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", height = "20", screen = s })
+    mywibox[s] = awful.wibox({ position = "top", ontop = false, height = "16", screen = s })
     -- Add widgets to the wibox - order matters
     mywibox[s].widgets = {
         {
@@ -400,7 +401,7 @@ for s = 1, screen.count() do
 end
 -- }}}
 
-mystatusbar = awful.wibox({ position = "bottom", screen = 1, ontop = false, width = 1, height = 16 })
+mystatusbar = awful.wibox({ position = "bottom", screen = 1, ontop = false, width = 1, height = 10 })
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
@@ -446,6 +447,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey },            "#148", function () awful.util.spawn("screenruler") end),
     awful.key({ },                   "#148", function () awful.util.spawn("galculator") end),
     awful.key({ },                   "#225", function () awful.util.spawn("luakit") end),
+    awful.key({ modkey,           }, "#225", function () awful.util.spawn("chromium") end),
+    awful.key({ modkey,           }, "#165", function () awful.util.spawn("claws-mail") end),
     awful.key({ },                   "#165", function () awful.util.spawn("pcmanfm") end),
     awful.key({ "Control"         }, "Print", function () awful.util.spawn("xfce4-terminal") end),
     awful.key({ modkey,           }, "Print", function () awful.util.spawn("xfce4-screenshooter") end),
@@ -563,6 +566,8 @@ awful.rules.rules = {
                      focus = true,
                      keys = clientkeys,
                      buttons = clientbuttons } },
+    { rule = { class = "Conky" }, callback = function(c) c:tags({ tags[1][1], tags[1][2], tags[1][3], 
+                                                                tags[1][4], tags[1][5], tags[1][6], tags[1][7], tags[1][8], tags[1][9]}) end},
     { rule = { class = "MPlayer" }, properties = { floating = true } },
     { rule = { class = "gimp" }, properties = { floating = true } },
     { rule = { name = "galculator" }, properties = { floating = true } },
