@@ -23,12 +23,14 @@ function run_once(cmd)
   awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
 end
 
+run_once("xfsettingsd")
 run_once("cairo-compmgr")
 run_once("nm-applet")
 run_once("nitrogen --restore")
 run_once("blueman-applet")
 run_once("liferea")
 run_once("conky")
+run_once("xfce4-power-manager")
 
 
 -- This is used later as the default terminal and editor to run.
@@ -96,6 +98,10 @@ end
 --end
 -- }}}
 
+local oldspawn = awful.util.spawn
+awful.util.spawn = function (s)
+    oldspawn(s, false)
+end
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
@@ -249,8 +255,10 @@ volumecfg.mixercommand = function (command)
        status = string.match(status, "%[(o[^%]]*)%]")
        if string.find(status, "on", 1, true) then
                volume = volume .. "%"
+		awful.util.spawn("volnoti-show " .. volume)
        else   
                volume = volume .. "M"
+		awful.util.spawn("volnoti-show -m")
        end
        volumecfg.widget.text = volume
 end
@@ -342,7 +350,7 @@ for s = 1, screen.count() do
                                           end, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", ontop = false, height = "16", screen = s })
+    mywibox[s] = awful.wibox({ position = "top", ontop = false, height = "18", screen = s })
     -- Add widgets to the wibox - order matters
     mywibox[s].widgets = {
         {
